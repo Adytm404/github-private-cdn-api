@@ -1,89 +1,89 @@
-# Private CDN dengan Flask dan GitHub
+# Private CDN with Flask and GitHub
 
-Sebuah aplikasi web Flask sederhana yang berfungsi sebagai *Content Delivery Network* (CDN) pribadi dengan mengunggah file ke repositori GitHub melalui API.
-
----
-
-## Fitur
-
--   **Unggah File**: Menyediakan endpoint API (`/api/upload`) untuk mengunggah file.
--   **Penggantian Nama Otomatis**: File yang diunggah akan diganti namanya secara otomatis dengan format `timestamp-ukuranfile.ekstensi` untuk memastikan nama yang unik.
--   **Integrasi GitHub**: Mengunggah file langsung ke repositori GitHub yang ditentukan menggunakan GitHub API.
--   **Respons URL**: Memberikan URL mentah (`raw_url`) dari file yang berhasil diunggah di GitHub.
+A simple Flask web application that acts as a private Content Delivery Network (CDN) by uploading files to a GitHub repository via its API.
 
 ---
 
-## Persyaratan
+## Features
 
-Proyek ini memerlukan Python dan pustaka berikut:
+-   **File Upload**: Provides an API endpoint (`/api/upload`) for uploading files.
+-   **Automatic Renaming**: Uploaded files are automatically renamed using the format `timestamp-filesize.extension` to ensure unique filenames.
+-   **GitHub Integration**: Directly uploads files to a specified GitHub repository using the GitHub API.
+-   **URL Response**: Returns the raw URL of the successfully uploaded file on GitHub.
+
+---
+
+## Requirements
+
+This project requires Python and the following libraries:
 -   Flask
 -   requests
 -   python-dotenv
 
 ---
 
-## Pengaturan dan Instalasi
+## Setup and Installation
 
-1.  **Clone Repositori**
+1.  **Clone the Repository**
     ```bash
     git clone https://github.com/Adytm404/upload-private-cdn
     cd upload-private-cdn
     ```
 
-2.  **Buat dan Aktifkan Virtual Environment**
+2.  **Create and Activate Virtual Environment**
     ```bash
     python -m venv venv
-    source venv/bin/activate  # Untuk Windows gunakan `venv\Scripts\activate`
+    source venv/bin/activate  # For Windows, use `venv\Scripts\activate`
     ```
 
-3.  **Instal Dependensi**
-    Pastikan semua dependensi yang ada di `requirements.txt` terinstal.
+3.  **Install Dependencies**
+    Install the dependencies from `requirements.txt`.
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Konfigurasi Environment**
-    Aplikasi ini menggunakan variabel environment untuk konfigurasi. Buat file `.env` di direktori root proyek. File `.env` dan direktori `venv` diabaikan oleh Git.
+4.  **Environment Configuration**
+    This application uses environment variables for configuration. Create a `.env` file in the project's root directory. The `.env` file and the `venv` directory are ignored by Git.
     ```
     GITHUB_TOKEN="your_github_personal_access_token"
     REPO_OWNER="your_github_username"
     REPO_NAME="your_github_repository_name"
     ```
-    -   `GITHUB_TOKEN`: Token akses personal GitHub Anda dengan izin `repo`.
-    -   `REPO_OWNER`: Nama pengguna atau organisasi pemilik repositori.
-    -   `REPO_NAME`: Nama repositori di GitHub tempat file akan disimpan.
+    -   `GITHUB_TOKEN`: Your personal GitHub access token with `repo` scope.
+    -   `REPO_OWNER`: The username or organization that owns the repository.
+    -   `REPO_NAME`: The name of the GitHub repository where files will be stored.
 
 ---
 
-## Cara Menjalankan
+## How to Run
 
-1.  **Jalankan Aplikasi Flask**
+1.  **Run the Flask Application**
     ```bash
     python app.py
     ```
-    Aplikasi akan berjalan di `http://0.0.0.0:5000`.
+    The application will run on `http://0.0.0.0:5000`.
 
-2.  **Gunakan API untuk Mengunggah File**
-    Gunakan `curl` atau alat API lainnya untuk mengirim permintaan `POST` ke endpoint `/api/upload`.
+2.  **Use the API to Upload a File**
+    Use `curl` or any other API tool to send a `POST` request to the `/api/upload` endpoint.
 
-    Contoh menggunakan `curl`:
+    Example using `curl`:
     ```bash
     curl -X POST -F "file=@/path/to/your/file.jpg" http://localhost:5000/api/upload
     ```
 
 ---
 
-## Endpoint API
+## API Endpoint
 
-### Unggah File
+### Upload File
 
 -   **Endpoint**: `/api/upload`
--   **Metode**: `POST`
+-   **Method**: `POST`
 -   **Request**: `multipart/form-data`
     -   **Key**: `file`
-    -   **Value**: File yang akan diunggah.
+    -   **Value**: The file to be uploaded.
 
--   **Respons Sukses (`200 OK` atau `201 Created`)**
+-   **Success Response (`200 OK` or `201 Created`)**
     ```json
     {
       "success": true,
@@ -91,15 +91,15 @@ Proyek ini memerlukan Python dan pustaka berikut:
     }
     ```
 
--   **Respons Gagal (`400 Bad Request`)**
-    Jika tidak ada file yang disertakan dalam permintaan.
+-   **Error Response (`400 Bad Request`)**
+    If no file is included in the request.
     ```json
     {
       "error": "No file provided"
     }
     ```
--   **Respons Gagal (dari GitHub)**
-    Jika terjadi kesalahan saat mengunggah ke GitHub, respons dari API GitHub akan diteruskan.
+-   **Error Response (from GitHub)**
+    If an error occurs while uploading to GitHub, the response from the GitHub API will be forwarded.
     ```json
     {
         "success": false,
