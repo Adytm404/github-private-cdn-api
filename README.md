@@ -26,7 +26,7 @@ This project requires Python and the following libraries:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/Adytm404/upload-private-cdn
+    git clone https://github.com/Adytm404/github-private-cdn-api
     cd upload-private-cdn
     ```
 
