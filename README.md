@@ -26,7 +26,7 @@ Proyek ini memerlukan Python dan pustaka berikut:
 
 1.  **Clone Repositori**
     ```bash
-    git clone [<URL_REPOSITORI_ANDA>](https://github.com/Adytm404/upload-private-cdn)
+    git clone https://github.com/Adytm404/upload-private-cdn
     cd upload-private-cdn
     ```
 
