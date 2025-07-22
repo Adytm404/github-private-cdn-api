@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
+# Load environment variables from .env file
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -22,16 +23,19 @@ def upload():
 
     file = request.files['file']
     original_filename = secure_filename(file.filename)
-    extension = os.path.splitext(original_filename)[1]  # contoh: .jpg, .png
+    extension = os.path.splitext(original_filename)[1]  # example: .jpg, .png
     file_content = file.read()
     file_size = len(file_content)
 
+    # Format: timestamp-size.extension
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     new_filename = f"{timestamp}-{file_size}{extension}"
     filepath = f"images/{new_filename}"
 
+    # Encode file content to base64
     encoded_content = base64.b64encode(file_content).decode('utf-8')
 
+    # GitHub API URL
     github_api_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{filepath}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
@@ -44,6 +48,7 @@ def upload():
         "branch": BRANCH
     }
 
+    # Send PUT request to GitHub
     response = requests.put(github_api_url, json=data, headers=headers)
     if response.status_code in [200, 201]:
         raw_url = f"https://raw.githubusercontent.com/{REPO_OWNER}/{REPO_NAME}/{BRANCH}/{filepath}"
